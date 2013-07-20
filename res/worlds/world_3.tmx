@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="400" height="400" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Spritesheet (Huge)" tilewidth="32" tileheight="32">
+  <image source="tilesheets_png/Spritesheet (Huge).png" width="512" height="512"/>
+  <tile id="9">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="257" name="StructureSheet" tilewidth="32" tileheight="32">
+  <image source="tilesheets_png/StructureSheet.png" width="512" height="512"/>
+  <tile id="2">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="58">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="59">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="60">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="61">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="62">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="63">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="74">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="76">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="77">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="79">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="90">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="91">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="94">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="513" name="hyptosis_tile-art-batch-4" tilewidth="32" tileheight="32">
+  <image source="tilesheets_png/hyptosis_tile-art-batch-4.png" width="960" height="960"/>
+ </tileset>
+ <tileset firstgid="1413" name="hyptosis_tile-art-batch-3" tilewidth="32" tileheight="32">
+  <image source="tilesheets_png/hyptosis_tile-art-batch-3.png" width="960" height="960"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="400" height="400">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3DwQkAAAwDoSP7D901+lBw1VRVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVHz8PCmsSAMQJAA==
+  </data>
+ </layer>
+ <layer name="Trees" width="400" height="400">
+  <data encoding="base64" compression="gzip">
+   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
+  </data>
+ </layer>
+ <layer name="Buildings" width="400" height="400">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3cPQoCMRAG0LDNlupB1IOoF/Qu4kXWi2hjBKsgSGb9IeQ9GLBIoc0Mw8eYEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9G0xprQsajX++1sBEFXb16NzYJ3fbIramh8Azart69E5sMtv9kUdzA+AZtX29egcmIaUTkVdhs/9DgB+q7avR+fANb855zo+6/H5Zn4ANKu2r5sDAAAAAABAa9z5ARDhzg+ACHd+AES48wMg4tv3HfIVACLkKwBEyFcAiJCvABDh/7MAeEU+DkCEfBygT3P3B/k4QJ/m7g/ycYA+zd0f5OMAfbI/ABBhfwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB47w6tp5j7AMQJAA==
+  </data>
+ </layer>
+</map>

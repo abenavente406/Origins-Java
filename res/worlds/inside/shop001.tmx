@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="hyptosis_til-art-batch-2" tilewidth="32" tileheight="32">
+  <image source="../tilesheets_png/hyptosis_til-art-batch-2.png" width="960" height="960"/>
+ </tileset>
+ <tileset firstgid="901" name="hyptosis_tile-art-batch-1" tilewidth="32" tileheight="32">
+  <image source="../tilesheets_png/hyptosis_tile-art-batch-1.png" width="960" height="960"/>
+ </tileset>
+ <tileset firstgid="1801" name="hyptosis_tile-art-batch-3" tilewidth="32" tileheight="32">
+  <image source="../tilesheets_png/hyptosis_tile-art-batch-3.png" width="960" height="960"/>
+ </tileset>
+ <tileset firstgid="2701" name="hyptosis_tile-art-batch-4" tilewidth="32" tileheight="32">
+  <image source="../tilesheets_png/hyptosis_tile-art-batch-4.png" width="960" height="960"/>
+ </tileset>
+ <tileset firstgid="3601" name="Spritesheet (Huge)" tilewidth="32" tileheight="32">
+  <image source="../tilesheets_png/Spritesheet (Huge).png" width="512" height="512"/>
+  <tile id="0">
+   <properties>
+    <property name="solid" value="s"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACzvMzcBwhAA+CsQPgXgFAfwYqq6fBz8eier+AzEDDwIL8kEwshgjEAMAYvQzXZABAAA=
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgoBxs4YFgGBDhgWBCwIgHgtHBQ14Ghke8CH4kEWaBABc3BFvyoGKYOCWgmYfhQBMQE1IHVANSSzYAAHVpZhKQAQAA
+  </data>
+ </layer>
+ <layer name="Tile Layer 3" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgIB0Y8KJiZ24GBhduhLw2LwT7oeFEoJokbtzmwsBDoNpHvITVlfMwMEzlIcMDgxgAAGeeuVCQAQAA
+  </data>
+ </layer>
+ <layer name="Collisions" width="10" height="10" opacity="0.25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACxPkY2AQHCCMCxCrltr2optLbXXY3IAuDgArb/FLkAEAAA==
+  </data>
+ </layer>
+</map>
