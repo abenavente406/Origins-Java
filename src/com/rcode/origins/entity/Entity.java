@@ -10,6 +10,7 @@ import org.newdawn.slick.SpriteSheet;
 
 import com.rcode.origins.item.ItemSword;
 import com.rcode.origins.states.Play;
+import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Entity {
 
@@ -17,9 +18,11 @@ public abstract class Entity {
 	protected static SpriteSheet playerSheet = Play.playerSheet;
 
 	/** Entity location */
-	protected double x, y;
+	protected double x;
+    protected double y;
+
 	/** Entity direction */
-	protected int dir = 1; // 0 = up, 1 = down, 2 = left, 3 = right
+	protected Direction dir; // 0 = up, 1 = down, 2 = left, 3 = right
 	/** If the entity is moving */
 	protected boolean isMoving = false;
 
@@ -54,10 +57,10 @@ public abstract class Entity {
 	/** Entity image */
 	protected Animation movementUp, movementDown, movementLeft, movementRight;
 	protected Animation attackUp, attackDown, attackLeft, attackRight;
-	
+
 	/** Entity's animation duration time */
 	protected int[] duration;
-	
+
 	public Animation death;
 
 	/** Entity's image dimensions */
@@ -83,7 +86,7 @@ public abstract class Entity {
 
 	/** Distance that an entity can attack from */
 	protected int attackRange = 50;
-	
+
 	protected boolean attacking = false;
 
 	/** Item that is equipped */
@@ -117,9 +120,12 @@ public abstract class Entity {
 	 */
 	protected boolean superSpeed = false;
 
+    /** The rectangular bounding box for the entity */
+    protected Rectangle bounds;
+
 	/**
 	 * Create the entity
-	 * 
+	 *
 	 * @param x
 	 *            : The x tile location
 	 * @param y
@@ -128,11 +134,18 @@ public abstract class Entity {
 	public Entity(int x, int y) {
 		this.x = x * 32;
 		this.y = y * 32;
+
+        // Initialize the rectangle to the position and having no dimensions
+        // Don't worry though, the width and height are set later
+        this.bounds = new Rectangle((float)this.x, (float)this.y, 0, 0);
+
+        // By default, entities are facing down
+        dir = Direction.SOUTH;
 	}
 
 	/**
 	 * Update entities
-	 * 
+	 *
 	 * @param delta
 	 * @param p
 	 *            : The main game state
@@ -141,69 +154,19 @@ public abstract class Entity {
 
 	/**
 	 * Render entities
-	 * 
+	 *
 	 * @param p
 	 *            : The main game state
 	 */
-	public void render(Play p, Graphics g) {
-
-		this.movementDown.setAutoUpdate(false);
-		this.movementUp.setAutoUpdate(false);
-		this.movementLeft.setAutoUpdate(false);
-		this.movementRight.setAutoUpdate(false);
-
-		g.setColor(new Color(0, 0, 0, .4f));
-		g.fillOval((float) this.x + 6, (float) this.y + this.height - 4,
-				(float) this.realWidth - 12, (float) this.realHeight / 5);
-
-		g.setColor(Color.white);
-		// Based on direction, draw the entity's animation
-		if (dir == 0) {
-			if (this.isMoving) {
-				this.movementUp.setAutoUpdate(true);
-				movementUp.draw((float) x, (float) y);
-			} else {
-				this.avatarUp.draw((float) x, (float) y);
-			}
-		}
-		if (dir == 1) {
-			if (this.isMoving) {
-				this.movementDown.setAutoUpdate(true);
-				movementDown.draw((float) x, (float) y);
-			} else {
-				this.avatarDown.draw((float) x, (float) y);
-			}
-		}
-		if (dir == 2) {
-			if (this.isMoving) {
-				this.movementLeft.setAutoUpdate(true);
-				movementLeft.draw((float) x, (float) y);
-			} else {
-				this.avatarLeft.draw((float) x, (float) y);
-			}
-		}
-		if (dir == 3) {
-			if (this.isMoving) {
-				this.movementRight.setAutoUpdate(true);
-				movementRight.draw((float) x, (float) y);
-			} else {
-				this.avatarRight.draw((float) x, (float) y);
-			}
-		}
-
-		if (attacking){
-			// render attack
-		}
-			
-	}
+	public abstract void render(Play p, Graphics g);
 
 	/**
 	 * Render health of entities
-	 * 
+	 *
 	 * @param g
 	 *            : The graphics object to draw from
 	 */
-	public void renderHealth(Graphics g) {
+	protected void renderHealth(Graphics g) {
 
 		// If the entity is dead, don't render health
 		if (dead)
@@ -213,9 +176,16 @@ public abstract class Entity {
 				(float) this.y / 32 - 20);
 	}
 
+    protected void drawShadow(Graphics g) {
+        g.setColor(new Color(0, 0, 0, .4f));
+        g.fillOval((float) this.x + 6, (float) this.y + this.height - 4,
+                (float) this.realWidth - 12, (float) this.realHeight / 5);
+        g.setColor(Color.white);
+    }
+
 	/**
 	 * Attack target
-	 * 
+	 *
 	 * @param target
 	 *            : The entity being attacked
 	 * @throws SlickException
@@ -271,7 +241,7 @@ public abstract class Entity {
 
 	/**
 	 * Moves the entity
-	 * 
+	 *
 	 * @param newX
 	 *            : The new x location of the entity
 	 * @param newY
@@ -300,7 +270,7 @@ public abstract class Entity {
 
 	/**
 	 * Scans for a nearby monster
-	 * 
+	 *
 	 * @param p
 	 *            : The main game state
 	 * @return Monster found as Entity
@@ -330,7 +300,7 @@ public abstract class Entity {
 
 	/**
 	 * Scans for an npc
-	 * 
+	 *
 	 * @param p
 	 *            : The main game state
 	 * @return An npc nearby the player
@@ -356,10 +326,10 @@ public abstract class Entity {
 		// No npcs in range, return null
 		return null;
 	}
-	
+
 	/**
 	 * Scans for an npc
-	 * 
+	 *
 	 * @param p
 	 *            : The main game state
 	 * @return An npc nearby the player
@@ -388,7 +358,7 @@ public abstract class Entity {
 
 	/**
 	 * Scans for talking player
-	 * 
+	 *
 	 * @param p
 	 *            : The main game state
 	 * @return An npc nearby the player
@@ -410,7 +380,7 @@ public abstract class Entity {
 
 	/**
 	 * Scan for a nearby player
-	 * 
+	 *
 	 * @param p
 	 *            : The main game state
 	 * @return Player
@@ -432,7 +402,7 @@ public abstract class Entity {
 
 	/**
 	 * Deals damge to the entity
-	 * 
+	 *
 	 * @param damage
 	 *            : The amount of damage to cause
 	 */
@@ -442,7 +412,7 @@ public abstract class Entity {
 
 	/**
 	 * Faces the general direction of an entity
-	 * 
+	 *
 	 * @param entity
 	 *            : Entity to face
 	 * @param posX
@@ -480,7 +450,7 @@ public abstract class Entity {
 
 	/**
 	 * Get entity health
-	 * 
+	 *
 	 * @return The entity's current health
 	 */
 	public int getHealth() {
@@ -489,7 +459,7 @@ public abstract class Entity {
 
 	/**
 	 * Get real x-coordinate
-	 * 
+	 *
 	 * @return The entity's current x co-ordinate
 	 */
 	public double getX() {
@@ -502,7 +472,7 @@ public abstract class Entity {
 
 	/**
 	 * Get real y co-ordinate
-	 * 
+	 *
 	 * @return The entity's current y co-ordinate
 	 */
 	public double getY() {
@@ -515,7 +485,7 @@ public abstract class Entity {
 
 	/**
 	 * Gets the height
-	 * 
+	 *
 	 * @return The height of the avatar
 	 */
 	public int getHeight() {
@@ -524,7 +494,7 @@ public abstract class Entity {
 
 	/**
 	 * Gets the width
-	 * 
+	 *
 	 * @return The width of the avatar
 	 */
 	public int getWidth() {
@@ -533,7 +503,7 @@ public abstract class Entity {
 
 	/**
 	 * Get cooldown timer max value
-	 * 
+	 *
 	 * @return The initial value that the cool down timer starts at
 	 */
 	public int getCooldownTimer() {
@@ -542,7 +512,7 @@ public abstract class Entity {
 
 	/**
 	 * Get minimum amount of damage the entity can cause
-	 * 
+	 *
 	 * @return The minimum amount of damage an entity can cause
 	 */
 	public int getMinDamage() {
@@ -551,7 +521,7 @@ public abstract class Entity {
 
 	/**
 	 * Get maximum amount of damage the entity can cause
-	 * 
+	 *
 	 * @return The maximum amount of damage an entity can cause
 	 */
 	public int getMaxDamage() {
@@ -560,7 +530,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the attack range of the entity
-	 * 
+	 *
 	 * @return The attack range of the entity
 	 */
 	public int getAttackRange() {
@@ -569,7 +539,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the detect range of an entity
-	 * 
+	 *
 	 * @return The detect range of the entity
 	 */
 	public int getDetectRange() {
@@ -578,7 +548,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the adjusted width of the entity
-	 * 
+	 *
 	 * @return The adjusted width of the entity
 	 */
 	public int getPhysWidth() {
@@ -587,7 +557,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the adjusted height of the entity
-	 * 
+	 *
 	 * @return The adjusted height of the entity.
 	 */
 	public int getPhysHeight() {
@@ -596,7 +566,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the name of the entity
-	 * 
+	 *
 	 * @return The name of the entity
 	 */
 	public String getName() {
@@ -605,7 +575,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the speed of the entity
-	 * 
+	 *
 	 * @return The speed of which the entity moves
 	 */
 	public float getSpeed() {
@@ -614,7 +584,7 @@ public abstract class Entity {
 
 	/**
 	 * Get the dialogue of the entity
-	 * 
+	 *
 	 * @return The string that represents the dialogue of the entity
 	 */
 	public String getDialogue() {
@@ -623,7 +593,7 @@ public abstract class Entity {
 
 	/**
 	 * Set the dialogue of the entity
-	 * 
+	 *
 	 * @param dialogue
 	 *            : A new string that the entity will say when spoken to
 	 */
@@ -640,7 +610,7 @@ public abstract class Entity {
 
 	/**
 	 * Sets the equipped item
-	 * 
+	 *
 	 * @param item
 	 *            : The item to equip
 	 */
@@ -650,7 +620,7 @@ public abstract class Entity {
 
 	/**
 	 * Gets if the entity is talking
-	 * 
+	 *
 	 * @return If the entity is talking
 	 */
 	public boolean isTalking() {
@@ -663,7 +633,7 @@ public abstract class Entity {
 
 	/**
 	 * Creates the image array for animation with 3 frames
-	 * 
+	 *
 	 * @param x
 	 *            : The starting x tile on the spritesheet
 	 * @param y
@@ -676,7 +646,7 @@ public abstract class Entity {
 	/**
 	 * Creates the image array for animation with a custom amount of frames
 	 * *Only 1-7
-	 * 
+	 *
 	 * @param x
 	 *            : The starting x tile on the spritesheet
 	 * @param y
@@ -690,7 +660,7 @@ public abstract class Entity {
 		_movementLeft = new Image[frames];
 		_movementRight = new Image[frames];
 		_movementUp = new Image[frames];
-		
+
 		for (int i = 0; i < frames; i++) {
 			_movementDown[i] = playerSheet.getSubImage(x + i, y);
 			_movementLeft[i] = playerSheet.getSubImage(x + i, y + 1);
@@ -699,11 +669,11 @@ public abstract class Entity {
 		}
 
 		duration = new int[frames];
-		
+
 		for (int i = 0; i < frames; i++){
 			duration[i] = 150;
 		}
-		
+
 		setAvatars(x, y);
 
 		this.movementUp = new Animation(_movementUp, duration);
@@ -712,10 +682,10 @@ public abstract class Entity {
 		this.movementRight = new Animation(_movementRight, duration);
 
 	}
-	
+
 	/**
 	 * Sets the avatars for the image at starting tiles x, y
-	 * 
+	 *
 	 * @param x
 	 *            : The starting x tile on the spritesheet
 	 * @param y
