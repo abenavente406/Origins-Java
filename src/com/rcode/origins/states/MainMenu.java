@@ -60,8 +60,9 @@ public class MainMenu extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 
-		if (!m_overWorld.playing())
-			m_overWorld.loop();
+        // TODO: Uncomment to turn on music
+		//if (!m_overWorld.playing())
+			//m_overWorld.loop();
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 			if (select < 1) {

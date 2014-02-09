@@ -1,11 +1,14 @@
 package com.rcode.origins.entity.npc;
 
+import com.rcode.origins.entity.Direction;
 import com.rcode.origins.entity.Entity;
 import com.rcode.origins.entity.Player;
+import com.rcode.origins.entity.StaticEntity;
 import com.rcode.origins.level.Level;
 import com.rcode.origins.states.Play;
+import org.newdawn.slick.Graphics;
 
-public class NPC extends Entity {
+public class NPC extends StaticEntity {
 
 	/** The range in which npcs can detect enemies */
 	protected int enemyRange;
@@ -23,12 +26,13 @@ public class NPC extends Entity {
 	public NPC(int x, int y, Level level) {
 		super(x, y);
 		level.addNPC(this);
+
+        // NPCs are always facing southward
+        dir = Direction.SOUTH;
 	}
 
 	@Override
 	public void update(int delta, Play p) {
-		this.dir = 1;
-
 		Player player = this.scanForPlayer(p);
 
 		if (!(player == null)) {
@@ -43,7 +47,7 @@ public class NPC extends Entity {
 		}
 	}
 
-	/**
+    /**
 	 * Scan for a nearby monster
 	 * 
 	 * @param p

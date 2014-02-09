@@ -1,5 +1,6 @@
 package com.rcode.origins.entity.npc;
 
+import com.rcode.origins.entity.Direction;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
@@ -29,7 +30,7 @@ public class TFSpy extends Follower {
 
 		this.name = "The Spy";
 
-		this.dir = rand.nextInt(4);
+		this.dir = Direction.getRandDirection();
 
 		this.maxDamage = 20;
 		this.minDamage = 5;

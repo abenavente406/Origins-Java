@@ -154,7 +154,7 @@ public class Level {
 		for (Entity e : monsters) {
 			if (isOnCamera(e, cameraX, cameraY)) {
 				e.render(p, g);
-				e.renderHealth(g);
+				//e.renderHealth(g);
 			}
 		}
 

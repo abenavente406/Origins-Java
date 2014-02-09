@@ -2,6 +2,8 @@ package com.rcode.origins.entity.npc;
 
 import java.util.Random;
 
+import com.rcode.origins.entity.AnimatedEntity;
+import com.rcode.origins.entity.Direction;
 import org.newdawn.slick.SlickException;
 
 import com.rcode.origins.entity.Player;
@@ -9,13 +11,15 @@ import com.rcode.origins.entity.monster.Monster;
 import com.rcode.origins.level.Level;
 import com.rcode.origins.states.Play;
 
-public class Follower extends NPC {
+public class Follower extends AnimatedEntity {
+
+    int enemyRange;
 
 	/** Timer that indicates movement */
 	int movementTimer = 0;
 	int movementTimerMax = 700;
 	/** Random movement direction */
-	int movementDir = 1;
+	Direction movementDir;
 
 	/** Time not moving */
 	int timeNotMoving = 0;
@@ -27,7 +31,8 @@ public class Follower extends NPC {
 	Random rand = new Random();
 
 	public Follower(int x, int y, Level level) {
-		super(x, y, level);
+		super(x, y);
+        level.addNPC(this);
 	}
 
 	/**
@@ -36,7 +41,7 @@ public class Follower extends NPC {
 	@Override
 	public void update(int delta, Play p) {
 
-		this.dir = rand.nextInt(4);
+		this.dir = Direction.getRandDirection();
 
 		// Decreases the cool down timer for attacking
 		if (this.getCooldownTimer() > 0) {
@@ -50,7 +55,7 @@ public class Follower extends NPC {
 
 			if (timeNotMoving > timeNotMovingMax) {
 				movementTimer = rand.nextInt(400) + 1;
-				movementDir = rand.nextInt(4);
+				movementDir = Direction.getRandDirection();
 
 				isMoving = true;
 				timeNotMoving = 0;
@@ -65,13 +70,13 @@ public class Follower extends NPC {
 		int dirX = 0, dirY = 0;
 
 		if (movementTimer < movementTimerMax) {
-			if (movementDir == 0)
+			if (movementDir == Direction.NORTH)
 				dirY--;
-			if (movementDir == 1)
+			if (movementDir == Direction.SOUTH)
 				dirY++;
-			if (movementDir == 2)
+			if (movementDir == Direction.WEST)
 				dirX--;
-			if (movementDir == 3)
+			if (movementDir == Direction.EAST)
 				dirX++;
 
 			movementTimer++;
@@ -137,17 +142,6 @@ public class Follower extends NPC {
 				newX = getX() + dx;
 				newY = getY() + dy;
 			}
-		}
-
-		if (!(player == null)) {
-
-			if (player.isTalking()) {
-				this.speak(p);
-			} else {
-				isTalking = false;
-			}
-		} else {
-			this.isTalking = false;
 		}
 
 		move(newX, newY, p);

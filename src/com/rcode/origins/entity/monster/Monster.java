@@ -1,129 +1,137 @@
 package com.rcode.origins.entity.monster;
 
-import java.util.Random;
-
-import org.newdawn.slick.SlickException;
-
-import com.rcode.origins.entity.Entity;
+import com.rcode.origins.entity.AnimatedEntity;
+import com.rcode.origins.entity.Direction;
 import com.rcode.origins.entity.Player;
 import com.rcode.origins.level.Level;
 import com.rcode.origins.states.Play;
+import org.newdawn.slick.SlickException;
 
-public class Monster extends Entity {
+import java.util.Random;
 
-	/** Timer for random movement */
-	int movementTimer = 0;
-	int movementTimerMax = 300;
-	/** Direction that will be random */
-	int movementDir = 1;
-	/** Counter variable */
-	int i = 0;
+public class Monster extends AnimatedEntity {
 
-	Random rand = new Random();
+    /**
+     * Timer for random movement
+     */
+    private int movementTimer = 0;
+    private int movementTimerMax = 300;
+    /**
+     * Direction that will be random
+     */
+    private Direction movementDir;
+    /**
+     * Counter variable
+     */
+    private int i = 0;
 
-	public Monster(int x, int y, Level level) {
+    private Random rand = new Random();
 
-		super(x, y);
+    public Monster(int x, int y, Level level) {
 
-		level.addMonster(this);
-		this.attackRange = 25;
+        super(x, y);
 
-	}
+        level.addMonster(this);
+        this.attackRange = 25;
+    }
 
-	@Override
-	public void update(int delta, Play p) {
+    @Override
+    public void update(int delta, Play p) {
 
-		this.dir = 1;
+        // Decreases the cool down timer for attacking
+        if (this.getCooldownTimer() > 0) {
+            this.coolDownTimer -= delta;
+        }
 
-		// Decreases the cool down timer for attacking
-		if (this.getCooldownTimer() > 0) {
-			this.coolDownTimer -= delta;
-		}
+        // If the monster isn't moving, then start a new movement
+        if (!isMoving) {
+            movementTimer = rand.nextInt(400) + 1;
+            movementDir = Direction.values()[rand.nextInt(4)];
+        }
 
-		// If the monster isn't moving, then start a new movement
-		if (!isMoving) {
-			movementTimer = rand.nextInt(400) + 1;
-			movementDir = rand.nextInt(4);
-		}
+        // Sets the real direction to be the random directions
+        this.dir = movementDir;
 
-		// Sets the real direction to be the random directions
-		this.dir = movementDir;
+        // Movement variables that will be manipulated
+        int dirX = 0, dirY = 0;
 
-		// Movement variables that will be manipulated
-		int dirX = 0, dirY = 0;
+        if (movementTimer < movementTimerMax) {
+            switch (movementDir) {
+                case NORTH:
+                    dirY--;
+                    break;
+                case SOUTH:
+                    dirY++;
+                    break;
+                case WEST:
+                    dirX--;
+                    break;
+                case EAST:
+                    dirX++;
+                    break;
+            }
+            movementTimer++;
+            isMoving = true;
 
-		if (movementTimer < movementTimerMax) {
-			if (movementDir == 0)
-				dirY--;
-			if (movementDir == 1)
-				dirY++;
-			if (movementDir == 2)
-				dirX--;
-			if (movementDir == 3)
-				dirX++;
+        } else {
 
-			movementTimer++;
-			isMoving = true;
+            // If the movement timer exceeds the max, set the timer back to 0
+            if (i < 500) {
+                i++;
+            } else {
+                i = 0;
+                isMoving = false;
+            }
+        }
 
-		} else {
+        // The monster scans for a nearby player
+        Player player = this.scanForPlayer(p);
 
-			// If the movement timer exceeds the max, set the timer back to 0
-			if (i < 500) {
-				i++;
-			} else {
-				i = 0;
-				isMoving = false;
-			}
-		}
+        // Sets the new coordinates of the monster
+        double newX = getX() + dirX * getSpeed() * delta;
+        double newY = getY() + dirY * getSpeed() * delta;
 
-		// The monster scans for a nearby player
-		Player player = this.scanForPlayer(p);
+        // If there is a player nearby, move towards the player
+        if (!(player == null)) {
 
-		// Sets the new coordinates of the monster
-		double newX = getX() + dirX * getSpeed() * delta;
-		double newY = getY() + dirY * getSpeed() * delta;
+            dir = faceEntity(player, this.getX(), this.getY());
+            //System.out.println(dir);
+            double distX = player.getX() - this.getX();
+            double distY = player.getY() - this.getY();
+            double distTotal = Math.sqrt(distX * distX + distY * distY);
 
-		// If there is a player nearby, move towards the player
-		if (!(player == null)) {
+            // Attack and return (don't move) if the player is within attacking
+            // range
+            if (Math.abs(distTotal) < this.attackRange) {
+                try {
+                    this.attack(player);
+                } catch (SlickException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
 
-			dir = this.faceEntity(player, this.getX(), this.getY());
-			//System.out.println(dir);
-			double distX = player.getX() - this.getX();
-			double distY = player.getY() - this.getY();
-			double distTotal = Math.sqrt(distX * distX + distY * distY);
+            double dx = (distX / distTotal) * speed * delta;
+            double dy = (distY / distTotal) * speed * delta;
+            newX = getX() + dx;
+            newY = getY() + dy;
+        }
 
-			// Attack and return (don't move) if the player is within attacking
-			// range
-			if (Math.abs(distTotal) < this.attackRange) {
-				try {
-					this.attack(player);
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
-				return;
-			}
+        // Move the monster
+        move(newX, newY, p);
+    }
 
-			double dx = (distX / distTotal) * speed * delta;
-			double dy = (distY / distTotal) * speed * delta;
-			newX = getX() + dx;
-			newY = getY() + dy;
-		}
+    /**
+     * Kill the monster
+     *
+     * @param p
+     */
+    public void die(Play p) {
+        // Remove the monster from the world
+        p.getLevel().monsters.remove(this);
 
-		// Move the monster
-		move(newX, newY, p);
-	}
-
-	/**
-	 * Kill the monster
-	 * 
-	 * @param p
-	 */
-	public void die(Play p) {
-		// Remove the monster from the world
-		p.getLevel().monsters.remove(this);
-
-		// Debug print
-		System.out.println(getName() + " was killed!");
-	}
+        // Debug print
+        System.out.println(getName() + " was killed!");
+    }
 
 }

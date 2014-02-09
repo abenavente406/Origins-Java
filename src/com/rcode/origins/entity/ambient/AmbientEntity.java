@@ -4,17 +4,19 @@ package com.rcode.origins.entity.ambient;
 
 import java.util.Random;
 
+import com.rcode.origins.entity.AnimatedEntity;
+import com.rcode.origins.entity.Direction;
 import com.rcode.origins.entity.Entity;
 import com.rcode.origins.level.Level;
 import com.rcode.origins.states.Play;
 
-public class AmbientEntity extends Entity {
+public class AmbientEntity extends AnimatedEntity {
 
 	/** Timer for random movement */
 	int movementTimer = 0;
 	int movementTimerMax = 300;
 	/** Direction that will be random */
-	int movementDir = 1;
+	Direction movementDir;
 
 	/** Time not moving */
 	int timeNotMoving = 0;
@@ -29,14 +31,12 @@ public class AmbientEntity extends Entity {
 		super(x, y);
 		level.addAmbient(this);
 
-		this.dir = rand.nextInt(4);
+		this.dir = Direction.values()[rand.nextInt(4)];
 		this.detectRange = 120;
 	}
 
 	@Override
 	public void update(int delta, Play p) {
-		this.dir = 1;
-
 		// Decreases the cool down timer for attacking
 		if (this.getCooldownTimer() > 0) {
 			this.coolDownTimer -= delta;
@@ -49,7 +49,7 @@ public class AmbientEntity extends Entity {
 
 			if (timeNotMoving > timeNotMovingMax) {
 				movementTimer = rand.nextInt(400) + 1;
-				movementDir = rand.nextInt(4);
+				movementDir = Direction.values()[rand.nextInt(4)];
 
 				isMoving = true;
 				timeNotMoving = 0;
@@ -64,14 +64,10 @@ public class AmbientEntity extends Entity {
 		int dirX = 0, dirY = 0;
 
 		if (movementTimer < movementTimerMax) {
-			if (movementDir == 0)
-				dirY--;
-			if (movementDir == 1)
-				dirY++;
-			if (movementDir == 2)
-				dirX--;
-			if (movementDir == 3)
-				dirX++;
+			     if (movementDir == Direction.NORTH)    dirY--;
+			else if (movementDir == Direction.SOUTH)    dirY++;
+			else if (movementDir == Direction.EAST)     dirX--;
+			else if (movementDir == Direction.WEST)     dirX++;
 
 			movementTimer++;
 			isMoving = true;

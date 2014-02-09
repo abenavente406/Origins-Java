@@ -49,15 +49,6 @@ public abstract class Entity {
 	/** Entity image */
 	protected Image avatarUp, avatarDown, avatarLeft, avatarRight;
 
-	/** The image arrays for animations */
-	protected Image[] _movementUp, _movementDown, _movementLeft, _movementRight;
-	protected Image[] _attackUp, _attackDown, _attackLeft, _attackRight;
-	protected Image[] _death;
-
-	/** Entity image */
-	protected Animation movementUp, movementDown, movementLeft, movementRight;
-	protected Animation attackUp, attackDown, attackLeft, attackRight;
-
 	/** Entity's animation duration time */
 	protected int[] duration;
 
@@ -421,28 +412,30 @@ public abstract class Entity {
 	 *            : The y value of entity (not the one to face)
 	 * @return The general direction to face
 	 */
-	public int faceEntity(Entity entity, double posX, double posY) {
+	public Direction faceEntity(Entity entity, double posX, double posY) {
 
-		float angle = (float) Math.toDegrees(Math.atan(entity.y / entity.x));
+		float angle = (float) Math.atan(entity.y / entity.x);
 
 		if (posX > entity.x && posY < entity.y) {
-			angle += 90;
+			angle += Math.PI / 2;
 		} else if (posX > entity.x && posY > entity.y) {
-			angle += 180;
+			angle += Math.PI;
 		} else if (posX < entity.x && posY > entity.y) {
-			angle += 270;
+			angle += 3 * Math.PI / 2;
 		}
 
-		int direction = 0;
+        // Fixed direction to use the Direction enum
+		Direction direction;
 
-		if ((0 < angle && angle < 60)) {
-			direction = 3;
-		} else if (60 < angle && angle < 120) {
-			direction = 0;
-		} else if (120 < angle && angle < 250) {
-			direction = 2;
+        // Fixed angle calculation errors
+		if (angle > -Math.PI / 4 && angle <= Math.PI / 4) {
+			direction = Direction.EAST;
+		} else if (angle > Math.PI / 4 && angle <= 3 * Math.PI / 4) {
+			direction = Direction.NORTH;
+		} else if (angle > 3 * Math.PI / 4 && angle <= 5 * Math.PI / 4) {
+			direction = Direction.WEST;
 		} else {
-			direction = 3;
+			direction = Direction.SOUTH;
 		}
 
 		return direction;
@@ -631,57 +624,7 @@ public abstract class Entity {
 		return this.avatarDown;
 	}
 
-	/**
-	 * Creates the image array for animation with 3 frames
-	 *
-	 * @param x
-	 *            : The starting x tile on the spritesheet
-	 * @param y
-	 *            : The starting y tile on the spritesheet
-	 */
-	public void setAnimation(int x, int y) {
-		setAnimation(x, y, 3, playerSheet);
-	}
 
-	/**
-	 * Creates the image array for animation with a custom amount of frames
-	 * *Only 1-7
-	 *
-	 * @param x
-	 *            : The starting x tile on the spritesheet
-	 * @param y
-	 *            : The starting y tile on the spritesheet
-	 * @param frames
-	 * 			  : The number of frames in the animation
-	 */
-	public void setAnimation(int x, int y, int frames, SpriteSheet playerSheet) {
-
-		_movementDown = new Image[frames];
-		_movementLeft = new Image[frames];
-		_movementRight = new Image[frames];
-		_movementUp = new Image[frames];
-
-		for (int i = 0; i < frames; i++) {
-			_movementDown[i] = playerSheet.getSubImage(x + i, y);
-			_movementLeft[i] = playerSheet.getSubImage(x + i, y + 1);
-			_movementRight[i] = playerSheet.getSubImage(x + i, y + 2);
-			_movementUp[i] = playerSheet.getSubImage(x + i, y + 3);
-		}
-
-		duration = new int[frames];
-
-		for (int i = 0; i < frames; i++){
-			duration[i] = 150;
-		}
-
-		setAvatars(x, y);
-
-		this.movementUp = new Animation(_movementUp, duration);
-		this.movementDown = new Animation(_movementDown, duration);
-		this.movementLeft = new Animation(_movementLeft, duration);
-		this.movementRight = new Animation(_movementRight, duration);
-
-	}
 
 	/**
 	 * Sets the avatars for the image at starting tiles x, y

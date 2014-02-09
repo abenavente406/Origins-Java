@@ -25,18 +25,22 @@ public abstract class StaticEntity extends Entity {
     @Override
     public abstract void update(int delta, Play p);
 
-    public void render(Graphics g, int delta) {
-
+    @Override
+    public void render(Play p, Graphics g) {
         drawShadow(g);
 
         switch (dir) {
             case NORTH:
+                avatarUp.draw((float)x, (float)y);
                 break;
             case EAST:
+                avatarRight.draw((float)x, (float)y);
                 break;
             case SOUTH:
+                avatarDown.draw((float)x, (float)y);
                 break;
             case WEST:
+                avatarLeft.draw((float)x, (float)y);
                 break;
         }
     }

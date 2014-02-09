@@ -20,7 +20,7 @@ import com.rcode.origins.item.ItemSword;
 import com.rcode.origins.level.ExitZone;
 import com.rcode.origins.states.Play;
 
-public class Player extends Entity {
+public class Player extends AnimatedEntity {
 
 	/** The player's inventory */
 	public static InventoryPlayer inventory;
@@ -84,13 +84,10 @@ public class Player extends Entity {
 	/**
 	 * Update method
 	 * 
-	 * @param dirX
-	 *            : The x direction
-	 * @param dirY
-	 *            : The y direction
 	 * @param delta
-	 * @param p
-	 *            : The main game state
+	 * @param p  The main game state
+     * @param gc The game container where drawing/updating takes
+     *           place
 	 * @throws SlickException
 	 */
 	public void update(int delta, Play p, GameContainer gc)
@@ -171,19 +168,19 @@ public class Player extends Entity {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			this.isMoving = true;
-			dir = 1;
+			dir = Direction.SOUTH;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			this.isMoving = true;
-			dir = 0;
+			dir = Direction.NORTH;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			this.isMoving = true;
-			dir = 2;
+			dir = Direction.WEST;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			this.isMoving = true;
-			dir = 3;
+			dir = Direction.EAST;
 		}
 
 		// Sets if the player can be followed
